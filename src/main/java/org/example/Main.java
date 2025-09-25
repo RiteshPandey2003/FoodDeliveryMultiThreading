@@ -1,7 +1,9 @@
 package org.example;
 
 import org.example.CustomerGenrator.CustomerGenerator;
-import org.example.DataStructure.ReadyQueue;
+import org.example.DataStructure.orderQueue;
+import org.example.DataStructure.partnerQueue;
+import org.example.Dispatcher.Dispatcher;
 import org.example.model.DeliveryPartner;
 import org.example.model.Order;
 import org.example.model.Restaurant;
@@ -9,11 +11,14 @@ import org.example.model.Restaurant;
 
 public class Main {
     public static void main(String[] args) {
-        Restaurant restaurant = new Restaurant("Pizza Place", 3);
+        Restaurant restaurant = new Restaurant("Pizza Place", 3, orderQueue.queue);
         CustomerGenerator generator = new CustomerGenerator(restaurant);
 
-        DeliveryPartner dp1 = new DeliveryPartner("Ramesh", ReadyQueue.queue);
-        DeliveryPartner dp2 = new DeliveryPartner("Suresh", ReadyQueue.queue);
+        Dispatcher dispatcher = new Dispatcher(orderQueue.queue, partnerQueue.queue);
+        dispatcher.start();
+
+        DeliveryPartner dp1 = new DeliveryPartner("Ramesh", partnerQueue.queue);
+        DeliveryPartner dp2 = new DeliveryPartner("Suresh", partnerQueue.queue);
 
         // Start threads
         generator.start();
@@ -26,8 +31,8 @@ public class Main {
             // After generator finishes, no more orders will come.
             // Now we insert "poison pills" to tell delivery partners to stop
             // Number of poison pills = number of consumer threads (2 here)
-            ReadyQueue.queue.put(new Order(true)); // poison pill for dp1
-            ReadyQueue.queue.put(new Order(true)); // poison pill for dp2
+            orderQueue.queue.put(new Order(true)); // poison pill for dp1
+            orderQueue.queue.put(new Order(true)); // poison pill for dp2
 
             // Wait until both delivery partners finish their work and consume poison pills
             dp1.join();

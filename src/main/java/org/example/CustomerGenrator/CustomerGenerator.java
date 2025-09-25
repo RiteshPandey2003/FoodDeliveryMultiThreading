@@ -17,7 +17,7 @@ public class CustomerGenerator extends Thread{
     public void run(){
         int orderCount = 0;
         try {
-            while (orderCount < 25 ){
+            while (orderCount < 2 ){
                 String customerName = "Customer-" + ThreadLocalRandom.current().nextInt(100);
                 Order order = new Order(customerName, restaurant);
                 System.out.println("submit order " + order );
