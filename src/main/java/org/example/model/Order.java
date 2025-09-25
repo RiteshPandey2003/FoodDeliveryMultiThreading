@@ -8,25 +8,42 @@ public class Order {
     private final String customerName;
     private final String restaurantName;
     private String status;
+    private final boolean poisonPill;
 
     public Order(String customerName, Restaurant restaurantName) {
         this.id = UUID.randomUUID().toString();
         this.customerName = customerName;
         this.restaurantName = restaurantName.getName();
         this.status = "CREATED";
+        this.poisonPill = false;
+    }
+
+    public Order(boolean poisonPill) {
+        this.id = "POISON"; // dummy ID
+        this.customerName = "SYSTEM";
+        this.restaurantName = "SYSTEM";
+        this.status = "STOP";
+        this.poisonPill = poisonPill;
     }
 
     public void updateStatus(String status){
         this.status = status;
     }
 
+
     public String getId() { return id; }
     public String getCustomerName() { return customerName; }
     public String getRestaurantName() { return restaurantName; }
     public String getStatus() { return status; }
+    public boolean isPoisonPill() { return poisonPill; }
+
+
 
     @Override
     public String toString() {
+        if (poisonPill) {
+            return "Order{POISON_PILL}";
+        }
         return String.format("Order{id=%s, customer=%s, restaurant=%s, status=%s}",
                 id, customerName, restaurantName, status);
     }
