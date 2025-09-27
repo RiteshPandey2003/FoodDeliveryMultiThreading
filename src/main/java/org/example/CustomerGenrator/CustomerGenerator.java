@@ -21,7 +21,6 @@ public class CustomerGenerator extends Thread{
                 String customerName = "Customer-" + ThreadLocalRandom.current().nextInt(100);
                 Order order = new Order(customerName, restaurant);
                 System.out.println("submit order " + order );
-
                 restaurant.SubmitOrder(order);
                 orderCount++;
                 Thread.sleep(500);

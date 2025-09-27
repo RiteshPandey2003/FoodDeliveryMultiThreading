@@ -11,14 +11,14 @@ import org.example.model.Restaurant;
 
 public class Main {
     public static void main(String[] args) {
-        Restaurant restaurant = new Restaurant("Pizza Place", 3, orderQueue.queue);
+        Restaurant restaurant = new Restaurant("Pizza Place", 3,3, orderQueue.queue);
         CustomerGenerator generator = new CustomerGenerator(restaurant);
 
         Dispatcher dispatcher = new Dispatcher(orderQueue.queue, partnerQueue.queue);
         dispatcher.start();
 
-        DeliveryPartner dp1 = new DeliveryPartner("Ramesh", partnerQueue.queue);
-        DeliveryPartner dp2 = new DeliveryPartner("Suresh", partnerQueue.queue);
+        DeliveryPartner dp1 = new DeliveryPartner("Ramesh", partnerQueue.queue,2);
+        DeliveryPartner dp2 = new DeliveryPartner("Suresh", partnerQueue.queue, 2);
 
         // Start threads
         generator.start();

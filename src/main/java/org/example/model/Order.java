@@ -17,6 +17,7 @@ public class Order {
     private LocalDateTime pickedUpTime;
     private LocalDateTime deliveredTime;
     private final boolean poisonPill;
+    private boolean Cancelled = false;
 
     public Order(String customerName, Restaurant restaurantName) {
         this.id = UUID.randomUUID().toString();
@@ -68,4 +69,15 @@ public class Order {
                 id, customerName, restaurantName, status, formatTime(orderPlacedTime));
     }
 
+    public synchronized  void Cancel(){
+        if(!status.equals("PICKED_UP") && !status.equals("DELIVERED")){
+            Cancelled = true;
+            status = "CANCELLED";
+            System.out.println("Order " + id + " cancelled by customer.");
+        }
+    }
+
+    public synchronized  boolean isCancelled(){
+        return Cancelled;
+    }
 }
