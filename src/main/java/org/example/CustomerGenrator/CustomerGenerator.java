@@ -18,9 +18,10 @@ public class CustomerGenerator extends Thread{
         int orderCount = 0;
         try {
             while (orderCount < 2 ){
+                boolean express = ThreadLocalRandom.current().nextBoolean();
                 String customerName = "Customer-" + ThreadLocalRandom.current().nextInt(100);
-                Order order = new Order(customerName, restaurant);
-                System.out.println("submit order " + order );
+                Order order = new Order(customerName, restaurant, express);
+                System.out.println("submit order " + order + "express  " + express );
                 restaurant.SubmitOrder(order);
                 orderCount++;
                 Thread.sleep(500);

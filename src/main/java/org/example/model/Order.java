@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-public class Order {
+public class Order implements Comparable<Order>{
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
@@ -18,13 +18,15 @@ public class Order {
     private LocalDateTime deliveredTime;
     private final boolean poisonPill;
     private boolean Cancelled = false;
+    private boolean express;
 
-    public Order(String customerName, Restaurant restaurantName) {
+    public Order(String customerName, Restaurant restaurantName, boolean express) {
         this.id = UUID.randomUUID().toString();
         this.customerName = customerName;
         this.restaurantName = restaurantName.getName();
         this.status = "CREATED";
         this.poisonPill = false;
+        this.express = express;
         this.orderPlacedTime = LocalDateTime.now();
     }
 
@@ -33,6 +35,7 @@ public class Order {
         this.customerName = "SYSTEM";
         this.restaurantName = "SYSTEM";
         this.status = "STOP";
+        this.express = false;
         this.orderPlacedTime = LocalDateTime.now();
         this.poisonPill = poisonPill;
     }
@@ -79,5 +82,16 @@ public class Order {
 
     public synchronized  boolean isCancelled(){
         return Cancelled;
+    }
+
+    public boolean isExpress(){ return express; }
+
+    @Override
+    public int compareTo(Order other) {
+        if (this.express && !other.express) return -1;
+        if (!this.express && other.express) return 1;
+
+        // 2. If both same type, earlier order comes first (FIFO)
+        return this.orderPlacedTime.compareTo(other.orderPlacedTime);
     }
 }

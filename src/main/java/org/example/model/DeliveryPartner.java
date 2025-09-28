@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 public class DeliveryPartner extends Thread {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
+    private  boolean express;
     private final String name;
     private final BlockingQueue<Order> partnerQueue;
     private final int capacity; // max orders at once
@@ -24,12 +25,6 @@ public class DeliveryPartner extends Thread {
                 // Take up to 'capacity' orders
                 for (int i = 0; i < capacity; i++) {
                     Order order = partnerQueue.take(); // blocks until order available
-
-//                    // Stop the thread if poison pill received
-//                    if (order.isPoisonPill()) {
-//                        System.out.println("DeliveryPartner " + name + " received POISON_PILL. Shutting down.");
-//                        return; // exit thread
-//                    }
 
                     // Skip cancelled orders
                     if (order.isCancelled()) {
